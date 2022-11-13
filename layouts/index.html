@@ -6,7 +6,10 @@
         {{ end }}
 	</div>
 
-    <h1>{{ .Site.Title }}</h1>
+    <h1>{{ .Site.Params.Title | default .Site.Title }}</h1>
+    {{ if isset .Site.Params "subtitle" }}
+        <h2>{{ .Site.Params.Subtitle }}</h2>
+    {{ end }}
     {{ if isset .Site.Params "description" }}
         <h2>{{ .Site.Params.Description }}</h2>
     {{ end }}
@@ -33,6 +36,13 @@
 <div class="markdown-content">
     {{ readFile "index-about.md" | markdownify }}
 </div>
+{{ end }}
+<!-- Render content/_index.md if it exists and isn't empty -->
+{{ if (and (fileExists "content/_index.md") .Content) }}
+<br>
+<section class="home-content">
+    {{ .Content }}
+</section>
 {{ end }}
 
 {{ if isset .Site.Params "showpostsonhomepage" }}
